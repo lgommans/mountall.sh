@@ -1,10 +1,12 @@
-# mountall.sh - a little script to mount all partitions from a disk image
+## mountall.sh
+
+A little script to mount all partitions from a disk image
 
 **Usage**
 
     ./mountall.sh my_disk_image.img
 
-There are no options.
+There are no options. By default it mounts readonly.
 
 **What does it do?**
 
@@ -33,3 +35,4 @@ and mount that loop device in the created directory.
 - Test with older versions of fdisk (an older Kali machine didn't seem to have
   color output by default, it might die on that --color=never option)
 
+- Add options (e.g. mounting not read-only)
