@@ -1,0 +1,9 @@
+Version 1.2
+Fixed bug where it would miss the first partition. Might be caused by a
+different fdisk version or disk type.
+Instead of taking line 10+ it now greps for the partition table header (the
+line containing 'Device Boot Start' etc.) and takes all lines below that.
+
+Version 1
+Initial working version
+
