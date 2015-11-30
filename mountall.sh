@@ -18,7 +18,7 @@ fi;
 
 # Pipe the output from fdisk, the part that displays partitions, to a loop
 # Every line is read into the variable called $line
-fdisk $coloropt -l $1 | grep -EA9001 '^Device.*Boot.*Start.*End' | grep '[0-9]' | while read line; do
+fdisk $coloropt -l $1 | grep -EA9001 '^\s*Device.*Boot.*Start.*End' | grep '[0-9]' | while read line; do
 	# The directory we're going to mount in is simply the device name prefixed with 'mnt-'
 	dir=$(echo "$line" | awk '{print "mnt-" $1}');
 
