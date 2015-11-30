@@ -9,9 +9,16 @@
 bs=$(fdisk -l $1 | grep sectors | grep ' bytes$' | grep -o '[0-9]* bytes$' | grep -o '[0-9]*')
 echo Detected block size $bs
 
+# Some old versions of fdisk don't support --options...
+coloropt=""
+fdisk --color=never -l $1 >/dev/null 2>/dev/null
+if [ $? -eq 0 ]; then
+	coloropt="--color=never "
+fi;
+
 # Pipe the output from fdisk, the part that displays partitions, to a loop
 # Every line is read into the variable called $line
-fdisk --color=never -l $1 | grep -EA9001 '^Device.*Boot.*Start.*End' | grep '[0-9]' | while read line; do
+fdisk $coloropt -l $1 | grep -EA9001 '^Device.*Boot.*Start.*End' | grep '[0-9]' | while read line; do
 	# The directory we're going to mount in is simply the device name prefixed with 'mnt-'
 	dir=$(echo "$line" | awk '{print "mnt-" $1}');
 
@@ -34,7 +41,7 @@ fdisk --color=never -l $1 | grep -EA9001 '^Device.*Boot.*Start.*End' | grep '[0-
 	echo "part $dir starts $start ends $end loopdev $lodev offset $offset; mounting..."
 
 	# And finally try mounting it
-	mount -ro $lodev $dir
+	mount -o=ro $lodev $dir
 
 	# If that didn't work, show that it didn't work.
 	if [ $? -ne 0 ]; then
