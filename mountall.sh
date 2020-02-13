@@ -3,7 +3,7 @@
 # Usage: mountall my_disk.dd
 
 # Author: Luc Gommans
-# Version: 1.2
+# Version: 1.3
 
 if [ $# -lt 1 ]; then
 	echo "Usage: mountall.sh image";
