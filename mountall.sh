@@ -3,7 +3,7 @@
 # Usage: mountall my_disk.dd
 
 # Author: Luc Gommans
-# Version: 1.3
+# Version: 1.4
 
 if [ $# -lt 1 ]; then
 	echo "Usage: mountall.sh image";
@@ -31,8 +31,8 @@ fi;
 # Pipe the output from fdisk, the part that displays partitions, to a loop
 # Every line is read into the variable called $line
 fdisk $coloropt -l $img | grep -EA9001 '^\s*Device.*Start.*End' | grep '[0-9]' | while read line; do
-	# The directory we're going to mount in is simply the device name prefixed with 'mnt-'
-	dir=$(echo "$line" | awk '{print "mnt-" $1}');
+	# The directory we're going to mount in is simply the device (or file) name prefixed with 'mnt-'
+	dir="mnt-$(basename "$(echo "$line" | awk '{print $1}')")";
 
 	# Does the second column contain a '*' sign?
 	echo "$line" | awk '{print $2}' | grep '*' > /dev/null
@@ -55,9 +55,9 @@ fdisk $coloropt -l $img | grep -EA9001 '^\s*Device.*Start.*End' | grep '[0-9]' |
 	# And finally try mounting it
 	mount -o ro $lodev $dir
 
-	# If that didn't work, show that it didn't work.
+	# If that failed, show error + which loopback device, in case the user wants to try manually
 	if [ $? -ne 0 ]; then
-		echo "ERROR MOUNTING $dir"
+		echo "Error mounting $lodev on $dir"
 	fi;
 done
 

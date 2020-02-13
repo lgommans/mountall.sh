@@ -1,4 +1,13 @@
-Version 1.3
+Version 1.4 2020-02-05
+- Fix mounting from another directory. You can now:
+    $ cd /tmp && mountall.sh ~/sdcard.img
+  Previously this would try to create "/tmp/mnt-~/sdcard.img1",
+  now it will use "/tmp/mnt-sdcard.img1".
+
+- Improve error message when mounting failed
+
+
+Version 1.3 2016-08-02
 
 - Added usage text and some info when it's called with no arguments.
 
@@ -6,12 +15,14 @@ Version 1.3
 and I honestly forgot why this was. Reading the 'mount' man page, it seems
 the change is correct, at least for my system, so let's keep the change.
 
+
 Version 1.2
 Fixed bug where it would miss the first partition. Might be caused by a
 different fdisk version or disk type.
 Instead of taking line 10+ it now greps for the partition table header (the
 line containing 'Device Boot Start' etc.) and takes all lines below that.
 
-Version 1
+
+Version 1.0 2015-10
 Initial working version
 
